@@ -1,9 +1,9 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {signin} from '../../actions/auth';
+import {signup} from '../../actions/auth';
 
-class Login extends React.Component{
+class Register extends React.Component{
     renderError= ({error, touched})=>{
         if(touched && error){
             return(
@@ -27,18 +27,25 @@ class Login extends React.Component{
         );
     }
 
+
     onSubmit = (formValues)=>{
-        this.props.signin(formValues);
+        this.props.signup(formValues);
     }
     
     render(){
-        if(this.props.isSignedIn){
-            this.props.history.push("/");            
-        }
-        
         return(
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}  className="ui form">
                 <div className="ui grid">
+                    <div className="one column centered row">
+                        <div className="column">                        
+                            <Field type="text" name="name" component={this.renderInput} label="Imię"/>
+                        </div>
+                    </div>
+                    <div className="one column centered row">
+                        <div className="column">                        
+                            <Field type="text" name="surname" component={this.renderInput} label="Nazwisko"/>
+                        </div>
+                    </div>
                     <div className="one column centered row">
                         <div className="column">                        
                             <Field type="text" name="email" component={this.renderInput} label="Email"/>
@@ -54,7 +61,7 @@ class Login extends React.Component{
                     <div className="one column centered row">
                         <div className="column">
                             <button className="ui primary button">
-                                Zaloguj
+                                Rejestruj
                             </button>
                         </div>
                     </div>   
@@ -85,8 +92,8 @@ const mapStateToProps = (state) =>{
 }
 
 const formWrapped =  reduxForm({
-    form: 'streamCreate',
+    form: 'register',
     validate
-})(Login);
+})(Register);
 
-export default connect(mapStateToProps, {signin})(formWrapped);
+export default connect(mapStateToProps, {signup})(formWrapped);
