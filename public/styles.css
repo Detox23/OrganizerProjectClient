@@ -1,0 +1,78 @@
+/* Hours picker component */
+.dropdownHours{
+    padding: 0;
+    margin: 0;
+    padding-left: 1em;
+    max-height: 10rem;
+    overflow: auto;
+    background: #ffffff;
+    border: 2px solid #e5e5e5;
+    box-sizing: border-box;
+    color: #000000;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.dropdownHours:first-child{
+    padding-top: 0.8em;
+}
+
+.dropdownList{
+    padding: 0;
+    margin: 0;
+    padding-left: 1em;
+    max-height: 10rem;
+    overflow: auto;
+    background: #ffffff;
+    border: 2px solid #e5e5e5;
+    box-sizing: border-box;
+    color: #000000;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.dropdownList:first-child{
+    padding-top: 0.8em;
+}
+
+.listItem{
+    list-style: none;
+    margin-bottom: 0.8em;
+}
+
+.hoursPickerWrapper{
+    font-family: sans-serif;
+    background: #ffffff;
+}
+
+.dropdownHeader{
+    margin-bottom: 0.8em;
+    padding: 0.4em 2em 0.4em 1em;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: #000000;
+    background: #7676762e;;
+}
+
+.dropdownListContainer{
+    align-content: center;
+}
+
+.dropdowContainer{
+    width: 12em;
+    margin: 0 auto;
+}
+
+/* Spinner */
+.spinnerPlacement{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Basic */
+.textCenter{
+    text-align: center;
+}

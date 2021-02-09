@@ -10,6 +10,7 @@ import { Api } from '../apis/api';
 export const removeTask = (id) => async dispatch => {
     dispatch({type: SHOW_SPINNER})
     new Api().delete(`/api/tasks/${id}`).then(response =>{
+        console.log(response)
         dispatch({type: GET_TASKS_PERSON, payload: response.data})
         dispatch({type: HIDE_SPINNER})
     }, error => {

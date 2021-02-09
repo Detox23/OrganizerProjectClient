@@ -3,12 +3,9 @@ import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import { Header, Modal} from 'semantic-ui-react'
 import {showCreateTaskModal, createTask} from '../actions/tasks';
-import { TimePicker } from 'antd';
+import { HourPickers } from './buttons/HourPickers';
 import momentLocaliser from 'react-widgets-moment';
 import 'react-widgets/dist/css/react-widgets.css'
-import 'antd/dist/antd.css';
-
-const { RangePicker } = TimePicker;
 
 
 class ModalComponent extends React.Component{
@@ -30,7 +27,20 @@ class ModalComponent extends React.Component{
     }
   }
 
+  setHours = (hour, type) => {
+    if(type === 1){
+      this.setState({
+        start:hour
+      })
+    }else{
+      this.setState({
+        end: hour
+      })
+    }
+  }
+
   renderInput= ({input, label, type, meta})=>{
+    
     const className = `field ${meta.error && meta.touched ? 'error': null}`;
     return(
       <div className={className}>
@@ -41,15 +51,18 @@ class ModalComponent extends React.Component{
     );
   }
 
-  renderTimeField = ({input, label, meta}) => {
-    const className = `field ${meta.error && meta.touched ? 'error': null}`;
-    return (
-      <div className={className}>
-        <label>{label}</label>
-        <RangePicker minuteStep={15} format={'HH:mm'} size="large"/>
-        {this.renderError(meta)}
-      </div>
-    );
+
+  createDate = (hour) =>{
+    var date = new Date(
+      this.props.date.getFullYear(),
+      this.props.date.getMonth(),
+      this.props.date.getDate(), 
+      hour.toString().substring(0,2), 
+      hour.toString().substring(3,5)
+    )
+    var timeZoneOffset = date.getTimezoneOffset() * 60000;
+    var newDate = new Date(date.getTime() - timeZoneOffset);
+    return newDate;
   }
 
   onSubmit = (formValues)=>{
@@ -58,9 +71,9 @@ class ModalComponent extends React.Component{
       var taskForCreation = {
         title: formValues.title,
         description: formValues.description,
-        startTime: new Date(this.props.date.getFullYear(), this.props.date.getMonth(), this.props.date.getDate(), this.state.start.getHours(), this.state.start.getMinutes()),     
-        endTime: new Date(this.props.date.getFullYear(), this.props.date.getMonth(), this.props.date.getDate(), this.state.end.getHours(), this.state.end.getMinutes())
-      }    
+        startTime: this.createDate(this.state.start),
+        endTime: this.createDate(this.state.end)
+      }
       this.props.createTask(taskForCreation);
     }else{
       this.setState({stateNull: true})
@@ -73,14 +86,6 @@ class ModalComponent extends React.Component{
         hours.push(i);
     }
     return hours;
-  }
-
-  hourPicked = (event) => {
-    if(event === null){
-      this.setState({start: null, end: null});
-    }else{
-      this.setState({start: event[0]._d, end: event[1]._d, stateNull:false});
-    }
   }
 
   showDisabledHours = () => {
@@ -98,7 +103,6 @@ class ModalComponent extends React.Component{
   }
 
   render(){
-    
     return (
       <Modal open={true}>
         <Modal.Header>Dodaj zadanie na:</Modal.Header>
@@ -117,25 +121,19 @@ class ModalComponent extends React.Component{
                         <Field type="text" name="description" component={this.renderInput} label="Opis"/>
                     </div>
                 </div>
-                <div className="one column centered row">
+                <div className="one column row">
                   <div className="column">
-                    {this.state !== null ?
-                      this.state.stateNull ? <div>
-                        <lable>Wybierz godziny</lable>
-                        <br/>
-                        </div>: null
-                    :null}                    
-                    <RangePicker 
-                    disabledHours={() => this.showDisabledHours()}
-                    disabledMinutes={(selectedHour) => this.showDisabledMinutes(selectedHour)}                     
-                    minuteStep={15} 
-                    format={'HH:mm'} 
-                    onChange={(e)=> this.hourPicked(e)} 
-                    size="large"/>
+                    <h3>Wybierz godziny</h3>
+                  </div>                  
+                </div>
+                <div className="one column row">
+                  <div className="column">
+                    <HourPickers setHours={this.setHours}/>
                   </div>
-                </div>             
+                </div>                      
               </div>
               <br/>
+             
               <div className="one column centered row">
                   <div className="column">
                       <button type="submit" className="ui primary button">

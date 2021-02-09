@@ -11,10 +11,9 @@ const INITIAL_STATE = {
 
 export default (state=INITIAL_STATE, action) =>{
     switch(action.type){
-        case REMOVE_VIEW_TASKS:
+        case REMOVE_VIEW_TASKS:            
             return {...state, allTasks: []}
         case GET_TASKS_PERSON:
-            console.log(action.payload)
             var disabledHours = {}
             action.payload.map(x => {
                 var startHour = x.startTime[3];

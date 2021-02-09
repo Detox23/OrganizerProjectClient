@@ -6,6 +6,7 @@ import {Spinner} from '../Spinner';
 import TaskCard from './TaskCard';
 import {formatDate, getDayName, moveDate} from '../../helpers/dateHelpers';
 import {DatePicker} from '../buttons/DatePicker';
+
 import ModalComponent from '../ModalComponent';
 
 class DailyTasks extends React.Component{
