@@ -1,13 +1,15 @@
 import axios from 'axios';
 
 const getAxios = () => {
+
+    
     let options = {
-        baseURL: 'http://localhost:8080'            
+        baseURL: process.env.NODE_ENV === 'development' ? 'http://www.google.com' : 'http://localhost:8080'            
     };
     if(localStorage.getItem('token') !== null){
         
         options = {
-            baseURL: 'http://localhost:8080',
+            baseURL: process.env.NODE_ENV === 'development' ? 'http://www.google.com' : 'http://localhost:8080',
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
