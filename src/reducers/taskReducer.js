@@ -9,34 +9,26 @@ const INITIAL_STATE = {
     allTasks: [],
 };
 
+const formatDisabledHours = (hour) => {
+    if(hour < 10){
+        return "0".concat(hour)
+    }else{
+        return hour.toString();
+    }
+}
+
 export default (state=INITIAL_STATE, action) =>{
     switch(action.type){
         case REMOVE_VIEW_TASKS:            
             return {...state, allTasks: []}
         case GET_TASKS_PERSON:
-            var disabledHours = {}
-            action.payload.map(x => {
-                var startHour = x.startTime[3];
-                var startMinute = x.startTime[4];
-                for(startHour; startHour <= x.endTime[3]; startHour++){
-                    disabledHours[startHour] = []
-                    if(startHour === x.startTime[3]){
-                        for(startMinute; startMinute <= 45; startMinute = startMinute + 15){
-                            disabledHours[startHour.toString()] = [...disabledHours[startHour.toString()], startMinute]
-                        }
-                    }else if(startHour === x.endTime[3]){
-                        var endMinute = 0;
-                        for(endMinute; endMinute <= x.endTime[4]; endMinute = endMinute + 15){
-                            disabledHours[startHour.toString()] = [...disabledHours[startHour.toString()], endMinute]
-                        }
-                    }else{
-                        var minutesToAdd = 0;
-                        for(minutesToAdd; minutesToAdd <= 45; minutesToAdd = minutesToAdd + 15){
-                            disabledHours[startHour.toString()] = [...disabledHours[startHour.toString()], minutesToAdd]
-                        }
-                    }
-                }
-                return disabledHours;
+            var disabledHours = []
+            action.payload.map((x, index) => {
+                var startHour = formatDisabledHours(x.startTime[3])
+                var startMinute = formatDisabledHours(x.startTime[4])
+                var endHour = formatDisabledHours(x.endTime[3])
+                var endMinute = formatDisabledHours(x.endTime[4]) 
+                return disabledHours.push({from: startHour.concat(":"+startMinute), to: endHour.concat(":"+endMinute)})
             })
             return {...state, disabledHours: disabledHours, allTasks: action.payload}
         case CREATE_NEW_TASK:

@@ -2,12 +2,11 @@ import React from 'react'
 import {getTasksPerson, getTasksPersonForDay} from '../../actions/tasks';
 import {changeDay} from '../../actions/dates';
 import {connect} from 'react-redux';
-import {Spinner} from '../Spinner';
-import TaskCard from './TaskCard';
+import {Spinner} from '../../components/Spinner';
+import TaskCard from '../../components/TaskCard';
 import {formatDate, getDayName, moveDate} from '../../helpers/dateHelpers';
-import {DatePicker} from '../buttons/DatePicker';
-
-import ModalComponent from '../ModalComponent';
+import {DatePicker} from '../../components/buttons/DatePicker';
+import ModalComponent from '../createTask/ModalComponent';
 
 class DailyTasks extends React.Component{
 
@@ -17,6 +16,9 @@ class DailyTasks extends React.Component{
         }
     }
 
+    orderTasks = (tasks) => {
+        return tasks.sort((a, b) => (a.startTime > b.startTime) ? 1: -1)
+    }
 
     getDate = (type) => {
         this.props.changeDay(moveDate(this.props.date, type));
@@ -24,7 +26,7 @@ class DailyTasks extends React.Component{
     }
 
     createList= () => {
-        return this.props.allTasks.map(({id, title, description, startTime, endTime}) =>{
+        return this.orderTasks(this.props.allTasks).map(({id, title, description, startTime, endTime}) =>{
             return<TaskCard key={id} id={id} title={title} description={description} startTime={startTime} endTime={endTime}/>
         })
     }
@@ -49,7 +51,7 @@ class DailyTasks extends React.Component{
 
         if(this.props.showCreateTaskModal === true){            
             return(
-                <ModalComponent/>
+                <ModalComponent />
             )
         }
 
@@ -91,7 +93,8 @@ const mapStateToProps = (state) =>{
         showCreateTaskModal: state.tasks.showCreateTaskModal,
         isSignedIn: state.auth.isSignedIn,
         loading: state.spinner.loading,
-        date: state.dates.date
+        date: state.dates.date,
+        disabledHours: state.tasks.disabledHours
     };
 }
 

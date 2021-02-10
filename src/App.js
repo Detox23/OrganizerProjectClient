@@ -1,9 +1,9 @@
 import React from 'react'
 import {BrowserRouter, Route} from 'react-router-dom';
-import Login from './auth/Login';
-import Register from './auth/Register';
-import DailyTasks from './overview/DailyTasks';
-import Header from './Header';
+import Login from './pages/authentication/Login';
+import Register from './pages/authentication/Register';
+import DailyTasks from './pages/landing/DailyTasks';
+import Header from './components/Header';
 
 const App = () => {
     return (

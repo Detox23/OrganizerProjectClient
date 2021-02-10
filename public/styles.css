@@ -76,3 +76,17 @@
 .textCenter{
     text-align: center;
 }
+
+.errorColor{ 
+    color: #B00020;
+}
+
+.buttonFixedSize{
+    min-width: 30%;
+}
+
+.elementRight{
+    float:right;
+}
+
+

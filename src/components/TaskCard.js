@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {formatHours} from '../../helpers/dateHelpers';
-import {removeTask} from '../../actions/tasks';
+import {formatHours} from '../helpers/dateHelpers';
+import {removeTask} from '../actions/tasks';
 
 class TaskCard extends React.Component{
     render(){

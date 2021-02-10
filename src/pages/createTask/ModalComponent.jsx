@@ -2,18 +2,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import { Header, Modal} from 'semantic-ui-react'
-import {showCreateTaskModal, createTask} from '../actions/tasks';
-import { HourPickers } from './buttons/HourPickers';
+import {showCreateTaskModal, createTask} from '../../actions/tasks';
+import { HourPickers } from '../../components/buttons/HourPickers';
 import momentLocaliser from 'react-widgets-moment';
 import 'react-widgets/dist/css/react-widgets.css'
 
+const hoursError = "Musisz wybrać godziny"
 
 class ModalComponent extends React.Component{
   constructor(props){
     super(props);
     momentLocaliser(this.props.date);
+    this.state = {}
   }
-
 
   renderError= ({error, touched})=>{
     if(touched && error){
@@ -40,7 +41,6 @@ class ModalComponent extends React.Component{
   }
 
   renderInput= ({input, label, type, meta})=>{
-    
     const className = `field ${meta.error && meta.touched ? 'error': null}`;
     return(
       <div className={className}>
@@ -50,7 +50,6 @@ class ModalComponent extends React.Component{
       </div>
     );
   }
-
 
   createDate = (hour) =>{
     var date = new Date(
@@ -66,40 +65,24 @@ class ModalComponent extends React.Component{
   }
 
   onSubmit = (formValues)=>{
-    if(this.state !== null){
-      this.props.showCreateTaskModal(false);
-      var taskForCreation = {
-        title: formValues.title,
-        description: formValues.description,
-        startTime: this.createDate(this.state.start),
-        endTime: this.createDate(this.state.end)
-      }
-      this.props.createTask(taskForCreation);
+    if(this.state.start === undefined || this.state.end === undefined){
+      this.setState({hoursError: true}, console.log(this.state));
     }else{
-      this.setState({stateNull: true})
-    }
-  }
-
-  getdisabledHours = () => {
-    var hours = [];
-    for(var i =0; i < 2; i++){
-        hours.push(i);
-    }
-    return hours;
-  }
-
-  showDisabledHours = () => {
-    var toReturn = []
-    for(var key in this.props.disabledHours){
-      if(this.props.disabledHours[key].length === 4){
-        toReturn.push(parseInt(key))
+      if(this.state !== null){
+        this.props.showCreateTaskModal(false);
+        var taskForCreation = {
+          title: formValues.title,
+          description: formValues.description,
+          startTime: this.createDate(this.state.start),
+          endTime: this.createDate(this.state.end)
+        }
+        this.props.createTask(taskForCreation);
+      }else{
+        this.setState({stateNull: true})
       }
     }
-    return toReturn
-  }
 
-  showDisabledMinutes = (chosenHour) => {
-    return this.props.disabledHours[chosenHour]
+    
   }
 
   render(){
@@ -124,23 +107,24 @@ class ModalComponent extends React.Component{
                 <div className="one column row">
                   <div className="column">
                     <h3>Wybierz godziny</h3>
+                    {this.state.hoursError ? <h5 className="textCenter errorColor">{hoursError}</h5>: null}
                   </div>                  
                 </div>
                 <div className="one column row">
                   <div className="column">
-                    <HourPickers setHours={this.setHours}/>
+                    <HourPickers disabledHours={this.props.disabledHours} setHours={this.setHours}/>
                   </div>
                 </div>                      
               </div>
               <br/>
              
               <div className="one column centered row">
-                  <div className="column">
-                      <button type="submit" className="ui primary button">
-                          Dodaj
-                      </button>
-                      <button onClick={() => this.props.showCreateTaskModal(false)} className="ui primary button">
+                  <div className="column">                      
+                      <button onClick={() => this.props.showCreateTaskModal(false)} className="ui primary button buttonFixedSize">
                           Zamknij
+                      </button>
+                      <button type="submit" className="ui primary button buttonFixedSize elementRight">
+                          Dodaj
                       </button>
                   </div>
               </div>  
@@ -150,7 +134,6 @@ class ModalComponent extends React.Component{
       </Modal>
       )
   }
-
 }
 
 const validate = (formValues) => {

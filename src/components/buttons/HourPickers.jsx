@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 
 export const HourPickers = (props) => {
-    const [firstHour, setFirstHour] = useState("Select start");
-    const [firstSelected, setFirstSelected] = useState(false);
-    const [secondHour, setSecondHour] = useState("Select end");
-    const [isOpen, setIsOpen] = useState(false);
-    const [isOpenSecond, setIsOpenSecond] = useState(false);
-    const [taken, setTaken] = useState([
-        { from: "02:15", to: "03:45" },
-        { from: "01:00", to: "01:45" }
-    ]);
+  const [firstHour, setFirstHour] = useState("Select start");
+  const [firstSelected, setFirstSelected] = useState(false);
+  const [secondHour, setSecondHour] = useState("Select end");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenSecond, setIsOpenSecond] = useState(false);
 
   const toggling = (type) => {
     if (type === 1) {
@@ -39,7 +35,7 @@ export const HourPickers = (props) => {
       }
     }
 
-    taken.forEach((x) => {
+    props.disabledHours.forEach((x) => {
       listHours = listHours.filter((y) => {
         if (x.from <= y && x.to >= y) {
           return 0;
