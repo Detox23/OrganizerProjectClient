@@ -4,12 +4,12 @@ const getAxios = () => {
 
     
     let options = {
-        baseURL: process.env.NODE_ENV === 'development' ? 'http://www.google.com' : 'http://localhost:8080'            
+        baseURL: process.env.NODE_ENV === 'development' ?  'http://localhost:8080': 'http://www.google.com'            
     };
     if(localStorage.getItem('token') !== null){
         
         options = {
-            baseURL: process.env.NODE_ENV === 'development' ? 'http://www.google.com' : 'http://localhost:8080',
+            baseURL: process.env.NODE_ENV === 'development' ?  'http://localhost:8080': 'http://www.google.com',
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
